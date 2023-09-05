@@ -4,7 +4,7 @@ import { getKeyCloakConfig } from "./keycloak";
 
 const { clientId, clientSecret, issuer } = getKeyCloakConfig();
 
-export const GET = NextAuth({
+const nextAuth = NextAuth({
   providers: [
     KeycloakProvider({
       clientId,
@@ -13,3 +13,5 @@ export const GET = NextAuth({
     }),
   ],
 });
+
+export { nextAuth as GET, nextAuth as POST };
