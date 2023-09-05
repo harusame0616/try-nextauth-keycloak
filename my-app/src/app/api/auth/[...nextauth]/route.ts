@@ -1,10 +1,10 @@
-import NextAuth from "next-auth";
+import NextAuth, { type NextAuthOptions } from "next-auth";
 import KeycloakProvider from "next-auth/providers/keycloak";
 import { getKeyCloakConfig } from "./keycloak";
 
 const { clientId, clientSecret, issuer } = getKeyCloakConfig();
-
-const nextAuth = NextAuth({
+export const nextAuthOption: NextAuthOptions = {
+  secret: process.env.NEXTAUTH_SECRET, // getServerSession 使用する場合は必要
   providers: [
     KeycloakProvider({
       clientId,
@@ -12,6 +12,8 @@ const nextAuth = NextAuth({
       issuer,
     }),
   ],
-});
+};
+
+const nextAuth = NextAuth(nextAuthOption);
 
 export { nextAuth as GET, nextAuth as POST };
