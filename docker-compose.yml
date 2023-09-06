@@ -1,5 +1,8 @@
 version: "3.7"
 
+volumes:
+  node_modules_volume:
+
 services:
   idp:
     container_name: keycloak
@@ -7,8 +10,17 @@ services:
     platform: linux/amd64
     command: ["start-dev"]
     ports:
-      - 19990:9990 # 管理者コンソール
-      - 18080:8080
+      - 8080:8080
     environment:
       - KEYCLOAK_ADMIN=admin
       - KEYCLOAK_ADMIN_PASSWORD=password
+  webapp:
+    container_name: webapp
+    image: node
+    command: ["npm", "run", "dev"]
+    volumes:
+      - ./my-app:/project/my-app
+      - node_modules_volume:/project/my-app/node_modules
+    working_dir: /project/my-app
+    ports:
+      - 13000:3000
